@@ -37,7 +37,7 @@ Par exemple:
 
 > Les données proviennent entre autres de @owidenergy.
 
-```{r echo=FALSE, warning=FALSE, message=FALSE} # juste dans 1er bloc}
+```{r}                                          # juste dans 1er bloc}
 
 library(fs)
 library(lubridate) # pour la fonction today()
@@ -53,7 +53,7 @@ base_path <- path("data", "raw")
 
 fname <- paste0(today(), "_olympic-archive.zip")
 
-fpath <- path(base_path, fname)
+fpath <- fs::path(base_path, fname)
 
 if(!file.exists(file = fpath)){
     download.file(url = URL, destfile = fpath)

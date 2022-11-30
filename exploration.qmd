@@ -23,11 +23,14 @@ citation: true
 # Inclure les références que vous utilisez dans vos rapports. Je conseille Zotero pour construire
 # ce fichier ou de connecter RStudio directement pour pouvoir citer avec @nom-de-reference.
 bibliography: references.bib
+format: 
+   html:
+     df-print: paged
 ---
 
 ## Un peu d'interactivité pour le plaisir!
 
-```{r map}
+```{r map, eval=FALSE}
 library(leaflet)
 leaflet() %>%
     setView(lng=150,
@@ -42,7 +45,7 @@ leaflet() %>%
 
 ## Peut-être que ça vous inspirera!
 
-```{r plotly, message=FALSE, warning=FALSE}
+```{r plotly, message=FALSE, warning=FALSE, eval=FALSE}
 library(plotly)
 library(gapminder)
 df <- gapminder
@@ -71,6 +74,41 @@ fig <- fig %>%
 fig
 ```
 
--------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 À votre imagination de jouer!
+
+## Réimporter les données
+
+```{r}
+
+# Au lieu de se bâdrer avec le code qu'on a dans index.qmd, on pourrait la sauvegarder dans helper.R et la source().
+
+df <- read.csv(file ="data/raw/athlete_events.csv")
+head(df)
+```
+
+Il utilise skimr::skim() pour jeter un premier coup d'oeil aux données.
+
+Ensuite, il veut jeter un coup d'oeil à la variable âge (qqun de 97 ans ?!).
+
+```{r}
+library(tidyverse)
+p1 <- ggplot(data=df, mapping=aes(x = Age))
+
+p1 + geom_histogram(color = "black",
+                    fill = "#facade",
+                    binwidth = 1)
+```
+
+```{r}
+df %>% 
+    filter(Age >= 79) %>%                      # pour choisir rangées
+    select(Name, Age, Team, Sex, Sport, Games) # pour choisir colonnes
+```
+
+```{r}
+p2 <- ggplot(data = df,
+             mapping = aes( x = Sex, y = Age))
+p2 + geom_boxplot()
+```
